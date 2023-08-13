@@ -11,20 +11,19 @@ public class Main {
         BufferedReader br = new BufferedReader(new FileReader("Tolst"));
         Map<String, Integer> replacesWords = new HashMap<>();
         String[] strings;
-        String word;
         try {
-            strings = br.readLine().split("[ ]|[,]&[ ]|[ - ]");
-            System.out.println("Count of words = " + strings.length);
+            strings = br.readLine().split("\\s+");
             for (String s : strings) {
-                if (!replacesWords.containsKey(s)) {
-                    replacesWords.put(s, 1);
-                } else replacesWords.put(s, replacesWords.get(s) + 1);
+               s = s.replaceAll("[^\\p{L}\\p{N}’'-]", "").toLowerCase();
+               replacesWords.put(s, replacesWords.getOrDefault(s,0) + 1);
             }
+            int total = 0;
             Set<Map.Entry<String, Integer>> entrySet = replacesWords.entrySet();
             for (Map.Entry<String, Integer> entry : entrySet) {
                 System.out.println(entry.getKey() + " -> " + entry.getValue());
-
+                total += entry.getValue();
             }
+            System.out.println("Count of words = " + total);
         } catch (IOException e) {
             e.printStackTrace();
         }
